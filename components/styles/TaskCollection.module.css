@@ -9,3 +9,12 @@
 .draggingOver {
   background-color: #f5f5f5;
 }
+.icon {
+  font-size: 24px;
+  vertical-align: bottom;
+  transform: translate(0px, 4px);
+}
+.taskCollection {
+  margin: 20px;
+  min-width: 280px;
+}

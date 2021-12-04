@@ -5,6 +5,13 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import { Droppable } from "react-beautiful-dnd";
 import { useState, useEffect } from "react";
+import {
+  FcTodoList,
+  FcServices,
+  FcApproval,
+  FcCheckmark,
+  FcEditImage,
+} from "react-icons/fc";
 
 export default function TaskCollection(props) {
   const [winReady, setwinReady] = useState(false);
@@ -17,6 +24,17 @@ export default function TaskCollection(props) {
   return (
     <div className={styles.taskCollection}>
       <Stack direction="row" spacing={2} className={styles.heading}>
+        {taskCategory === "Approval Needed" && (
+          <FcApproval className={styles.icon} />
+        )}
+        {taskCategory === "Todo" && <FcTodoList className={styles.icon} />}
+        {taskCategory === "Development" && (
+          <FcServices className={styles.icon} />
+        )}
+        {taskCategory === "Testing" && <FcEditImage className={styles.icon} />}
+        {taskCategory === "Completed" && (
+          <FcCheckmark className={styles.icon} />
+        )}
         <Typography sx={{ fontSize: 22 }} color="text.secondary">
           {taskCategory}
         </Typography>
@@ -38,6 +56,7 @@ export default function TaskCollection(props) {
                   task={task}
                   index={index}
                   category={taskCategory}
+                  deleteTask={props.deleteTask}
                 />
               ))}
               {provided.placeholder}

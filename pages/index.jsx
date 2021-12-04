@@ -50,7 +50,8 @@ export default function Home() {
       });
       return;
     }
-
+  
+    //when task is moved to a different category
     const startTaskIds = Array.from(startCategory.taskIds);
     const endTaskIds = Array.from(endCategory.taskIds);
 
@@ -84,9 +85,16 @@ export default function Home() {
     });
   };
 
-  // useEffect(() => {
-  //   console.log(appState.categories);
-  // }, [appState]);
+  function deleteTask(taskId) {
+    const newCategories = appState.categories.map((c) => {
+      const newTaskIds = c.taskIds.filter((id) => id !== taskId);
+      return { ...c, taskIds: newTaskIds };
+    });
+    setAppState({
+      ...appState,
+      categories: newCategories,
+    });
+  }
 
   return (
     <>
@@ -110,6 +118,7 @@ export default function Home() {
                 key={category.id}
                 taskCategory={category.name}
                 tasks={category.taskIds.map((id) => appState.tasks[id - 1])}
+                deleteTask={deleteTask}
               />
             ))}
           </div>
