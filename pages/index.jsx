@@ -4,17 +4,36 @@ import TaskCollection from "../components/TaskCollection";
 import Button from "@mui/material/Button";
 import { DragDropContext } from "react-beautiful-dnd";
 import initData from "../data/data.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import NewCard from "../components/newCard";
 
 export default function Home() {
   const [appState, setAppState] = useState(initData);
+  const isFirstRun = useRef(true);
+
+  useEffect(() => {
+    // dont set app state on first render but on every render anfterwards
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    localStorage.setItem("appState", JSON.stringify(appState));
+  }, [appState]);
+
+  useEffect(() => {
+    const appState = JSON.parse(localStorage.getItem("appState"));
+    if (appState) {
+      setAppState(appState);
+    }
+  }, []);
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
+    // if dropped anywhere outside doppables
     if (!destination) {
       return;
     }
+    // if dropped in same column at same position
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -27,6 +46,7 @@ export default function Home() {
     const endCategory = appState.categories.find(
       (c) => c.name === destination.droppableId
     );
+    //handle reordering
     if (startCategory === endCategory) {
       const newOrder = Array.from(startCategory.taskIds);
       const taskId = newOrder[source.index];
@@ -97,9 +117,40 @@ export default function Home() {
     });
   }
 
+  // for the add new task modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  function addTask(task) {
+    const newTaskId = appState.tasks.length + 1;
+    const newTask = {
+      id: newTaskId,
+      title: task.title,
+      description: task.description,
+      startDate: task.startDate,
+      endDate: task.endDate,
+      percentageComplete: task.percentageComplete,
+      owner: task.owner,
+    };
+    const newTasks = [...appState.tasks, newTask];
+    const newtaskCategory = task.phase;
+    const newCategories = appState.categories.map((c) => {
+      if (c.name === newtaskCategory) {
+        return {
+          ...c,
+          taskIds: [...c.taskIds, newTaskId],
+        };
+      }
+      return c;
+    });
+    setAppState({
+      ...appState,
+      tasks: newTasks,
+      categories: newCategories,
+    });
+    setOpen(false);
+  }
 
   return (
     <>
@@ -117,7 +168,7 @@ export default function Home() {
           <Button variant="contained" onClick={handleOpen}>
             Add a new Client
           </Button>
-          <NewCard open={open} handleClose={handleClose} />
+          <NewCard open={open} handleClose={handleClose} addTask={addTask} />
         </div>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className={styles.row}>

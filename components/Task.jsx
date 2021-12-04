@@ -52,7 +52,7 @@ export default function Task(props) {
             <Box sx={{ width: "100%" }}>
               <LinearProgress
                 variant="determinate"
-                value={props.task.percentageComplete}
+                value={parseInt(props.task.percentageComplete)}
                 sx={{
                   height: "6px",
                   marginTop: "5px",
@@ -75,7 +75,9 @@ export default function Task(props) {
               <Stack direction="row" spacing={1}>
                 <Typography variant="subtitle1">
                   {/* {`${props.task.endDate.diff(props.task.startDate, "days")} days`} */}
-                  {`${moment(props.task.startDate).format("MMM DD")} - ${moment(props.task.endDate).format("MMM DD")}`}
+                  {`${moment(props.task.startDate).format("MMM DD")} - ${moment(
+                    props.task.endDate
+                  ).format("MMM DD")}`}
                 </Typography>
               </Stack>
             </div>

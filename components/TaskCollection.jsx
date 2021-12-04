@@ -14,6 +14,7 @@ import {
 } from "react-icons/fc";
 
 export default function TaskCollection(props) {
+  // fix loading error
   const [winReady, setwinReady] = useState(false);
   useEffect(() => {
     setwinReady(true);

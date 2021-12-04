@@ -15,36 +15,33 @@ import Typography from "@mui/material/Typography";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
+import moment from "moment";
 import { useState } from "react";
 
 export default function NewCard(props) {
-  const [title, setTitle] = useState("");
-  const [phase, setPhase] = useState("");
+  const [title, setTitle] = useState("Title");
+  const [phase, setPhase] = useState("Approval Needed");
   const [description, setDescription] = useState("Additional information");
   const [completion, setCompletion] = useState(0);
-  const [startDate, setStartDate] = useState("12/12/2021");
-  const [endDate, setEndDate] = useState("12/12/2021");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [owner, setOwner] = useState("");
 
   const handleAdd = () => {
-    console.log(
+    const task = {
       title,
       phase,
       description,
-      completion,
-      startDate,
-      endDate,
-      owner
-    );
+      percentageComplete: completion,
+      startDate: moment(startDate).format("YYYY-MM-DD"),
+      endDate: moment(endDate).format("YYYY-MM-DD"),
+      owner,
+    };
+    props.addTask(task);
   };
 
   return (
-    <Dialog
-      open={props.open}
-      onClose={props.handleClose}
-      fullWidth={true}
-      minWidth="lg"
-    >
+    <Dialog open={props.open} onClose={props.handleClose} fullWidth={true}>
       <DialogTitle>Add Client</DialogTitle>
       <DialogContent>
         <DialogContentText>Fll in client details.</DialogContentText>
@@ -55,6 +52,7 @@ export default function NewCard(props) {
           label="Title"
           type="text"
           fullWidth
+          defaultValue={title}
           variant="standard"
           onChange={(event) => setTitle(event.target.value)}
         />
@@ -66,7 +64,7 @@ export default function NewCard(props) {
               id="phase-select"
               label="Phase"
               onChange={(event) => setPhase(event.target.value)}
-              defaultValue={"Approval Needed"}
+              defaultValue={phase}
             >
               <MenuItem value={"Approval Needed"}>Approval Needed</MenuItem>
               <MenuItem value={"Todo"}>Todo</MenuItem>
