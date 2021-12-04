@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { DragDropContext } from "react-beautiful-dnd";
 import initData from "../data/data.js";
 import { useState, useEffect } from "react";
+import NewCard from "../components/newCard";
 
 export default function Home() {
   const [appState, setAppState] = useState(initData);
@@ -50,7 +51,7 @@ export default function Home() {
       });
       return;
     }
-  
+
     //when task is moved to a different category
     const startTaskIds = Array.from(startCategory.taskIds);
     const endTaskIds = Array.from(endCategory.taskIds);
@@ -96,6 +97,10 @@ export default function Home() {
     });
   }
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <>
       <Head>
@@ -109,7 +114,10 @@ export default function Home() {
       <div className={styles.container}>
         <div className={styles.rowEnd}>
           <h1>Client Progress</h1>
-          <Button variant="contained">Add a new Client</Button>
+          <Button variant="contained" onClick={handleOpen}>
+            Add a new Client
+          </Button>
+          <NewCard open={open} handleClose={handleClose} />
         </div>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className={styles.row}>
