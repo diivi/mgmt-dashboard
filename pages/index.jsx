@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { DragDropContext } from "react-beautiful-dnd";
 import initData from "../data/data.js";
 import { useState, useEffect,useRef } from "react";
-import NewCard from "../components/newCard";
+import NewCard from "../components/NewCard";
 
 export default function Home() {
   const [appState, setAppState] = useState(initData);

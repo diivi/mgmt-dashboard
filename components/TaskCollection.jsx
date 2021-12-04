@@ -12,8 +12,11 @@ import {
   FcCheckmark,
   FcEditImage,
 } from "react-icons/fc";
+import { useRouter } from "next/router";
 
 export default function TaskCollection(props) {
+  const router = useRouter();
+
   // fix loading error
   const [winReady, setwinReady] = useState(false);
   useEffect(() => {
@@ -21,6 +24,10 @@ export default function TaskCollection(props) {
   }, []);
 
   const { taskCategory, tasks } = props;
+
+  function taskRedirect(task) {
+    router.push(`/tasks/${task.id}`);
+  }
 
   return (
     <div className={styles.taskCollection}>
@@ -53,6 +60,7 @@ export default function TaskCollection(props) {
             >
               {tasks.map((task, index) => (
                 <Task
+                  taskRedirect={taskRedirect}
                   key={task.id}
                   task={task}
                   index={index}

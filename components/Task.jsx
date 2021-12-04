@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
@@ -24,14 +24,18 @@ export default function Task(props) {
           className={`${styles.task} ${snapshot.isDragging && styles.dragging}`}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          elevation={5}
         >
           <CardHeader
             subheader={props.category}
             className={styles.topHeading}
             action={
               <Stack direction="row" spacing={0}>
-                <IconButton aria-label="edit">
-                  <EditIcon />
+                <IconButton
+                  aria-label="edit"
+                  onClick={() => props.taskRedirect(props.task)}
+                >
+                  <InsertLinkIcon />
                 </IconButton>
                 <IconButton
                   aria-label="delete"
